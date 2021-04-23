@@ -16,7 +16,9 @@ public class Solution {
 //    longestValidParentheses("()(()");
 //    System.out.println(countAndSay(1));
 //    System.out.println("aa".substring(1,3));
-    System.out.println(restoreIpAddresses("1111"));
+//    System.out.println(Integer.MAX_VALUE);
+//    minDistance("minDistancepark","spake");
+    nextGreaterElement(12443322);
   }
   public static int lengthOfLongestSubstring(String s) {
     Set<Character> set = new HashSet<>();
@@ -205,4 +207,69 @@ public class Solution {
       }
     }
   }
+
+  public static int minDistance(String word1, String word2) {
+    int[][] dp = new int[word1.length()+1][word2.length()+1];
+    int max = 0;
+    for (int i = 1; i <= word1.length(); i++) {
+      for (int j = 1; j <= word2.length(); j++) {
+        if (word1.charAt(i-1) == word2.charAt(j-1)){
+          dp[i][j] = dp[i-1][j-1] + 1;
+          max = Math.max(max,dp[i][j]);
+        }else{
+          dp[i][j] = Math.max(dp[i][j-1],dp[i-1][j]);
+        }
+      }
+    }
+    return (word1.length()) - max + (word2.length() - max);
+  }
+
+  public int minDistance2(String word1, String word2) {
+    if ( word1.length() == 0 || word2.length() == 0 ) return Math.max(word1.length(),word2.length());
+    int[][] dp = new int[word1.length()+1][word2.length()+1];
+    int max = 0;
+    for (int i = 1; i <= word1.length(); i++) {
+      for (int j = 1; j <= word2.length(); j++) {
+        if (word1.charAt(i-1) == word2.charAt(j-1)){
+          dp[i][j] = dp[i-1][j-1] + 1;
+          max = Math.max(max,dp[i][j]);
+        }else{
+          dp[i][j] = Math.max(dp[i][j-1],dp[i-1][j]);
+        }
+      }
+    }
+    return Math.abs(word1.length() - word2.length()) + Math.min(word1.length(),word2.length()) - max;
+  }
+
+  public static int nextGreaterElement(int n) {
+    char[] arr = String.valueOf(n).toCharArray();
+    for (int i = arr.length - 1; i > 0 ; i--) {
+      for (int j = i; j >=0; j--) {
+        if (arr[i] > arr[j]){
+          char tmp = arr[j];
+          arr[j] = arr[i];
+          arr[i] = tmp;
+          // 排序
+          for (int k = arr.length; k > j ; k--) {
+            for (int l = k+1; l > j; l--) {
+              if (arr[k] < arr[l]){
+                tmp = arr[k];
+                arr[k] = arr[l];
+                arr[l] = tmp;
+              }
+            }
+          }
+          String str = String.valueOf(arr);
+          String MAX = String.valueOf(Integer.MAX_VALUE);
+          if (str.length() < MAX.length()){
+            return Integer.parseInt(str);
+          }else {
+            return str.compareTo(MAX) <=0 ? Integer.parseInt(str): -1;
+          }
+        }
+      }
+    }
+    return -1;
+  }
+  
 }
