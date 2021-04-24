@@ -18,7 +18,8 @@ public class Solution {
 //    System.out.println("aa".substring(1,3));
 //    System.out.println(Integer.MAX_VALUE);
 //    minDistance("minDistancepark","spake");
-    nextGreaterElement(12443322);
+//    nextGreaterElement(12443322);
+    repeatedSubstringPattern("abab");
   }
   public static int lengthOfLongestSubstring(String s) {
     Set<Character> set = new HashSet<>();
@@ -271,5 +272,77 @@ public class Solution {
     }
     return -1;
   }
-  
+  // 暴力
+  public static boolean repeatedSubstringPattern(String s) {
+    int len = s.length();
+    for (int i = len/2; i > 0; i--) {
+      if (len % i == 0){
+        int start = i;
+        String tmp = s.substring(0,i);
+        boolean flag = true;
+        for (int j = 1; j < len/i; j++) {
+          if (tmp.equals(s.substring(start,start+i))){
+            start = start + i;
+          }else{
+            flag = false;
+            break;
+          }
+        }
+        if (flag) return true;
+      }
+    }
+    return false;
+  }
+//  https://leetcode.com/problems/palindromic-substrings/description/
+  // 判断回文子串数量
+  public int countSubstrings(String s) {
+    // 暴力搜索
+    int count = 0;
+    for (int i = 0; i < s.length(); i++) {
+      int len = 0;
+      while (true){
+        if (i - len >= 0 && i + len < s.length() && s.charAt(i-len) == s.charAt(i+len)){
+          count++;
+        }else {
+          break;
+        }
+        len++;
+      }
+      len = 0;
+      while (true){
+        if (i - len >= 0 && i + 1 + len < s.length() && s.charAt(i-len) == s.charAt(i + 1 +len)){
+          count++;
+        }else {
+          break;
+        }
+        len ++;
+      }
+    }
+    return count;
+  }
+
+  public int findMinDifference(List<String> timePoints) {
+    // 24 * 60
+    int len = 24 * 60;
+    int[] flag = new int[len];
+    for (String str : timePoints){
+      String[] arr = str.split(":");
+      flag[Integer.parseInt(arr[0]) * 60 + Integer.parseInt(arr[1])] += 1;
+    }
+    int pre = -1;
+    int min = Integer.MAX_VALUE;
+    int start = 0;
+    for (int i = 0; i < len; i++) {
+      if (flag[i] > 1) return 0;
+      if (flag[i] == 1){
+        if (pre != -1){
+          min = Math.min(min,i - pre);
+        }else {
+          start = i;
+        }
+        pre = i;
+      }
+    }
+    return Math.min(min,start+len - pre);
+  }
 }
