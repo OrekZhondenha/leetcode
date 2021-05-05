@@ -72,7 +72,7 @@ public class Solution {
     int k = 0;
     while (i<=mid && j<=last){
       if (arr[i] <= arr[j]){
-        temp[k++] = arr[i++];
+        temp[k++] = arr[i++]; 
       }else {
         temp[k++] = arr[j++];
       }
@@ -164,7 +164,6 @@ public class Solution {
   }
   public static void quickSort(int[] arr, int first, int last){
     if (first < last ){
-//      int pos = partitonByLast(arr,first,last);
       int pos = partitionByHoare(arr, first, last);
       quickSort(arr,first,pos-1);
       quickSort(arr,pos+1,last);
